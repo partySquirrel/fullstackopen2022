@@ -67,3 +67,26 @@ sequenceDiagram
 
 ## Osa 0.6
 
+Tee kaavio tilanteesta, jossa käyttäjä luo uuden muistiinpanon single page -versiossa.
+
+``` mermaid
+sequenceDiagram
+
+    
+    note over selain: Käyttäjä on kirjoittanut tekstikentään muistiinpanon ja painaa tallenna-nappia.
+    
+    rect rgba(204, 255, 204, 0.3)
+    note right of selain: Javascript lisää uuden muistiinpanon sivulle listaan.  
+     
+    note right of selain: Javascript lähettää uuden muistiinpanon palvelimelle.  
+    
+    selain->>+palvelin: HTTP POST /exampleapp/new_note_spa payload application/json {"content":"terve","date":"2022-10-05T13:21:12.660Z"}
+    palvelin-->>-selain: HTTP 201 created 
+    end  
+    
+    note right of selain: Päivitetty tieto näkyy ilman sivun uudelleenlatausta. 
+    note right of selain: Tieto ei ole kuitenkaan välttämättä onnistuneesti tallentunut palvelimella. 
+    
+    
+```
+
