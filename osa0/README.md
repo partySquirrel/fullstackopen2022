@@ -41,6 +41,29 @@ sequenceDiagram
 
 ## Osa 0.5
 
+Tee kaavio tilanteesta, jossa käyttäjä menee selaimella osoitteeseen https://studies.cs.helsinki.fi/exampleapp/spa eli muistiinpanojen Single Page App-versioon
+
+``` mermaid
+sequenceDiagram
+    
+    rect rgba(255, 229, 204, 0.3)
+    selain->>+palvelin: HTTP GET /exampleapp/spa
+    palvelin-->>-selain: HTTP 200 sivun HTML-koodi
+    
+    selain->>+palvelin: HTTP GET /exampleapp/main.css
+    palvelin-->>-selain: HTTP 200 main.css tyylitiedosto
+    
+    selain->>+palvelin: HTTP GET /exampleapp/spa.js
+    palvelin-->>-selain: HTTP 200 main.js javascript tiedosto
+    
+    note over selain: JS hakee JSON muodossa listan muistiinpanoista
+    
+    selain->>+palvelin: HTTP GET /exampleapp/data.json
+    palvelin-->>-selain: HTTP 200 text/json lista muistiinpanoista JSON muodossa
+       
+    end 
+    
+```
 
 ## Osa 0.6
 
