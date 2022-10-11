@@ -14,8 +14,15 @@ const App = () => {
   ]
 
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(new Array(10).fill(0))
 
-  const random = (max) => Math.floor(Math.random() * max);
+  const voteForCurrent = () => {
+    const copyOfVotes = [...votes]
+    copyOfVotes[selected] = votes[selected] + 1
+    setVotes(copyOfVotes)
+  }
+
+  const random = (max) => Math.floor(Math.random() * max)
 
   const getNextRandom = () => {
     const current = selected
@@ -24,15 +31,18 @@ const App = () => {
     let newRandom
     do {
       newRandom = random(max)
-    } while (current === newRandom);
+    } while (current === newRandom)
+
     setSelected(newRandom)
   }
 
   return (
     <div>
       <p>{anecdotes[selected]}</p>
+      <p>Votes: {votes[selected]}</p>
 
       <Button text='next anecdote' handleClick={getNextRandom}/>
+      <Button text='vote' handleClick={voteForCurrent}/>
     </div>
   )
 }
