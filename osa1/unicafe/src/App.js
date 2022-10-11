@@ -1,6 +1,7 @@
 import {useState} from 'react'
 
 const Header = ({text}) => <h1>{text}</h1>
+
 const Stats = ({text, value}) => <p>{text}: {value}</p>
 
 const Statistics = ({good, neutral, bad}) => {
@@ -18,6 +19,15 @@ const Statistics = ({good, neutral, bad}) => {
   const positive = () => {
     if (total() === 0 || good === 0) return '0%'
     return `${good / total() * 100}%`
+  }
+
+  if (total() === 0) {
+    return (
+      <div>
+        <Header text='Statistics'/>
+        <p>No feedback given :(</p>
+      </div>
+    )
   }
 
   return (
