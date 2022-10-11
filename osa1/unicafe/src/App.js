@@ -2,7 +2,10 @@ import {useState} from 'react'
 
 const Header = ({text}) => <h1>{text}</h1>
 
-const StatisticLine = ({text, value}) => <p>{text}: {value}</p>
+const StatisticLine = ({text, value}) => <tr>
+  <td>{text}</td>
+  <td>{value}</td>
+</tr>
 
 const Statistics = ({good, neutral, bad}) => {
   // yhteenlasketun määrän
@@ -33,14 +36,17 @@ const Statistics = ({good, neutral, bad}) => {
   return (
     <div>
       <Header text='Statistics'/>
+      <table>
+        <tbody>
+        <StatisticLine value={good} text='good'/>
+        <StatisticLine value={neutral} text='neutral'/>
+        <StatisticLine value={bad} text='bad'/>
 
-      <StatisticLine value={good} text='good'/>
-      <StatisticLine value={neutral} text='neutral'/>
-      <StatisticLine value={bad} text='bad'/>
-
-      <StatisticLine value={total()} text='all'/>
-      <StatisticLine value={average()} text='average'/>
-      <StatisticLine value={positive()} text='positive'/>
+        <StatisticLine value={total()} text='all'/>
+        <StatisticLine value={average()} text='average'/>
+        <StatisticLine value={positive()} text='positive'/>
+        </tbody>
+      </table>
     </div>
   )
 }
