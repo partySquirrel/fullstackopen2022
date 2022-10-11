@@ -2,12 +2,14 @@ import {useState} from 'react'
 
 const Header = ({text}) => <h1>{text}</h1>
 
-const StatisticLine = ({text, value}) => <tr>
-  <td>{text}</td>
-  <td>{value}</td>
-</tr>
+const StatisticLine = ({text, value}) => (
+  <tr>
+    <td>{text}</td>
+    <td>{value}</td>
+  </tr>
+)
 
-const Statistics = ({good, neutral, bad}) => {
+const StatisticsTable = ({good, neutral, bad}) => {
   // yhteenlasketun määrän
   const total = () => good + neutral + bad
 
@@ -26,36 +28,34 @@ const Statistics = ({good, neutral, bad}) => {
 
   if (total() === 0) {
     return (
-      <div>
-        <Header text='Statistics'/>
-        <p>No feedback given :(</p>
-      </div>
+      <p>No feedback given :(</p>
     )
   }
 
   return (
-    <div>
-      <Header text='Statistics'/>
-      <table>
-        <tbody>
-        <StatisticLine value={good} text='good'/>
-        <StatisticLine value={neutral} text='neutral'/>
-        <StatisticLine value={bad} text='bad'/>
+    <table>
+      <tbody>
+      <StatisticLine value={good} text='good'/>
+      <StatisticLine value={neutral} text='neutral'/>
+      <StatisticLine value={bad} text='bad'/>
 
-        <StatisticLine value={total()} text='all'/>
-        <StatisticLine value={average()} text='average'/>
-        <StatisticLine value={positive()} text='positive'/>
-        </tbody>
-      </table>
-    </div>
+      <StatisticLine value={total()} text='all'/>
+      <StatisticLine value={average()} text='average'/>
+      <StatisticLine value={positive()} text='positive'/>
+      </tbody>
+    </table>
   )
 }
 
-const Button = ({handleClick, text}) => (
-  <button onClick={handleClick}>
-    {text}
-  </button>
+const Statistics = ({good, neutral, bad}) => (
+  <div>
+    <Header text='Statistics'/>
+    <StatisticsTable good={good} bad={bad} neutral={neutral}/>
+  </div>
 )
+
+const Button = ({handleClick, text}) => <button onClick={handleClick}>{text}</button>
+
 
 const App = () => {
   // tallenna napit omaan tilaansa
