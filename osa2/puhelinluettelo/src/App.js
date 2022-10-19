@@ -46,12 +46,15 @@ const App = () => {
     const person = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1,
     }
 
-    setPersons(persons.concat(person))
-    setNewName('')
-    setNewNumber('')
+    PersonsService
+      .create(person)
+      .then(response => {
+        setPersons(persons.concat(response))
+        setNewName('')
+        setNewNumber('')
+      })
   }
 
   const handleInputNameChange = (event) => {
