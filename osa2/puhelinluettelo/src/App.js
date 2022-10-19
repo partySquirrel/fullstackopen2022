@@ -57,6 +57,14 @@ const App = () => {
       })
   }
 
+  const handlePersonRemove = (id) => {
+    PersonsService
+      .remove(id)
+      .then(() => {
+        setPersons(persons.filter(person => person.id !== id))
+      })
+  }
+
   const handleInputNameChange = (event) => {
     setNewName(event.target.value)
   }
@@ -87,6 +95,7 @@ const App = () => {
       <Persons
         persons={persons}
         filter={newFilter}
+        onRemove={handlePersonRemove}
       />
 
     </div>
