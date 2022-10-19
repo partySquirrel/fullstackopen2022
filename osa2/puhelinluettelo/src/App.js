@@ -58,11 +58,14 @@ const App = () => {
   }
 
   const handlePersonRemove = (id) => {
-    PersonsService
-      .remove(id)
-      .then(() => {
-        setPersons(persons.filter(person => person.id !== id))
-      })
+    const removable = persons.find(person => person.id === id)
+    if (window.confirm(`Do you want to remove ${removable.name}?`)) {
+      PersonsService
+        .remove(id)
+        .then(() => {
+          setPersons(persons.filter(person => person.id !== id))
+        })
+    }
   }
 
   const handleInputNameChange = (event) => {
