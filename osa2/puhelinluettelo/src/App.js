@@ -27,10 +27,6 @@ const App = () => {
       return {valid: false, errorMessage: 'Number field is empty'}
     }
 
-    if (persons.find(person => person.name === newName)) {
-      return {valid: false, errorMessage: `${newName} is already added to phonebook`}
-    }
-
     return {valid: true, errorMessage: ''}
   }
 
@@ -43,18 +39,38 @@ const App = () => {
       return
     }
 
-    const person = {
-      name: newName,
-      number: newNumber,
-    }
+    const existing = persons.find(person => person.name === newName)
+    if (existing) {
+      if (!window.confirm(`Update number for existing contact ${existing.name}?`)) {
+        return
+      }
 
-    PersonsService
-      .create(person)
-      .then(response => {
-        setPersons(persons.concat(response))
-        setNewName('')
-        setNewNumber('')
-      })
+      const updated = {
+        ...existing,
+        number: newNumber
+      }
+      PersonsService
+        .update(existing.id, updated)
+        .then(response => {
+          setPersons(persons.map(person => person.id === response.id ? response : person))
+          setNewName('')
+          setNewNumber('')
+        })
+
+    } else {
+      const person = {
+        name: newName,
+        number: newNumber,
+      }
+
+      PersonsService
+        .create(person)
+        .then(response => {
+          setPersons(persons.concat(response))
+          setNewName('')
+          setNewNumber('')
+        })
+    }
   }
 
   const handlePersonRemove = (id) => {
