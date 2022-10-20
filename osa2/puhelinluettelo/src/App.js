@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 import PersonsService from './services/PersonsService'
 
 const App = () => {
@@ -9,6 +10,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
 
   useEffect(() => {
     PersonsService
@@ -27,7 +30,7 @@ const App = () => {
       return {valid: false, errorMessage: 'Number field is empty'}
     }
 
-    return {valid: true, errorMessage: ''}
+    return {valid: true, errorMessage: null}
   }
 
   const addContact = (event) => {
@@ -35,7 +38,10 @@ const App = () => {
 
     let {valid, errorMessage} = validate()
     if (!valid) {
-      alert(errorMessage)
+      setErrorMessage(errorMessage)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
       return
     }
 
@@ -55,6 +61,13 @@ const App = () => {
           setPersons(persons.map(person => person.id === response.id ? response : person))
           setNewName('')
           setNewNumber('')
+
+          setSuccessMessage(
+            `Person '${response.name}' number updated to server`
+          )
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
         })
 
     } else {
@@ -69,6 +82,13 @@ const App = () => {
           setPersons(persons.concat(response))
           setNewName('')
           setNewNumber('')
+
+          setSuccessMessage(
+            `Person '${response.name}' added to server`
+          )
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
         })
     }
   }
@@ -79,6 +99,21 @@ const App = () => {
       PersonsService
         .remove(id)
         .then(() => {
+          setPersons(persons.filter(person => person.id !== id))
+          setSuccessMessage(
+            `Person '${removable.name}' removed from server`
+          )
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setErrorMessage(
+            `Person '${removable.name}' was already removed from server`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
           setPersons(persons.filter(person => person.id !== id))
         })
     }
@@ -99,6 +134,10 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+
+      <Notification message={errorMessage} severity="error"/>
+      <Notification message={successMessage} severity="success"/>
+
       <Filter onChange={handleFilterChange} value={newFilter}/>
 
       <h2>Add new</h2>
