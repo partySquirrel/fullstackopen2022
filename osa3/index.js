@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+app.use(express.json())
 
 let persons = [
   {
@@ -24,9 +25,20 @@ let persons = [
   }
 ]
 
+const randomNumber = (min, max) => {
+  return Math.floor(
+    Math.random() * (max - min + 1) + min
+  )
+}
+
+const generateId = () => {
+  return randomNumber(10,90000)
+}
+
 app.get('/', (req, res) => {
   res.send('<h1>Hi!</h1>')
 })
+
 app.get('/info', (req, res) => {
   const info = `Phonebook has info for ${persons.length} people.`
   const date = new Date()
@@ -36,6 +48,20 @@ app.get('/info', (req, res) => {
 app.get('/api/persons', (req, res) => {
   res.json(persons)
 })
+
+app.post('/api/persons', (req, res) => {
+  const body = req.body
+
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: generateId(),
+  }
+  persons = persons.concat(person)
+
+  res.status(201).json(person)
+})
+
 
 app.get('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id)
