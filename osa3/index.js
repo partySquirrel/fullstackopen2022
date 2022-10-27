@@ -32,7 +32,7 @@ const randomNumber = (min, max) => {
 }
 
 const generateId = () => {
-  return randomNumber(10,90000)
+  return randomNumber(10, 90000)
 }
 
 app.get('/', (req, res) => {
@@ -51,6 +51,22 @@ app.get('/api/persons', (req, res) => {
 
 app.post('/api/persons', (req, res) => {
   const body = req.body
+
+  if (!body.name) {
+    return res.status(400).json({
+      error: 'name is missing'
+    })
+  } else if (persons.find(p => p.name === body.name)) {
+    return res.status(400).json({
+      error: 'name must be unique'
+    })
+  }
+
+  if (!body.number) {
+    return res.status(400).json({
+      error: 'number is missing'
+    })
+  }
 
   const person = {
     name: body.name,
