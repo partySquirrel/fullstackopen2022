@@ -1,7 +1,9 @@
 const express = require('express')
+const morgan = require('morgan')
+
 const app = express()
 app.use(express.json())
-
+app.use(morgan('tiny'))
 
 let persons = [
   {
@@ -99,7 +101,7 @@ app.delete('/api/persons/:id', (req, res) => {
 })
 
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
+  response.status(404).send({error: 'unknown endpoint'})
 }
 app.use(unknownEndpoint)
 
