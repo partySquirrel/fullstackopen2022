@@ -3,5 +3,5 @@ Content-Type: application/json
 
 {
   "name": "Created with script",
-  "number": "123"
+  "number": "040-22334455"
 }
