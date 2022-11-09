@@ -139,3 +139,61 @@ describe('when deleting a blog', () => {
     expect(inDb).toHaveLength(initialBlogs.length)
   })
 })
+describe('when updating a blog', () => {
+  test('an existing blog is updated', async () => {
+    const origs = await blogsInDb()
+
+    // to get dates as strings
+    const originalBlog = JSON.parse(JSON.stringify(origs[0]))
+
+    const blog = {
+      ...originalBlog,
+      title: 'Updated in tests',
+      author: 'updated testrunner',
+      url: 'http://updated.com',
+    }
+
+    const result = await api
+      .put(`/api/blogs/${originalBlog.id}`)
+      .send(blog)
+      .expect(200)
+
+    const inDb = await blogsInDb()
+    expect(inDb).toHaveLength(initialBlogs.length)
+    expect(result.body.title).toBe('Updated in tests')
+    expect(result.body.author).toBe('updated testrunner')
+    expect(result.body.url).toBe('http://updated.com')
+    expect(result.body.likes).toBe(originalBlog.likes)
+    expect(result.body.createdAt).toBe(originalBlog.createdAt)
+    expect(result.body.updatedAt).not.toBe(originalBlog.updatedAt)
+  })
+
+  test('likes of an existing blog are updated', async () => {
+    const origs = await blogsInDb()
+
+    // to get dates as strings
+    const originalBlog = JSON.parse(JSON.stringify(origs[0]))
+
+    const blog = {
+      ...originalBlog,
+      likes: 666,
+    }
+
+    const result = await api
+      .put(`/api/blogs/${originalBlog.id}`)
+      .send(blog)
+      .expect(200)
+
+    const inDb = await blogsInDb()
+    expect(inDb).toHaveLength(initialBlogs.length)
+    expect(result.body.likes).toBe(666)
+    expect(result.body.createdAt).toBe(originalBlog.createdAt)
+    expect(result.body.updatedAt).not.toBe(originalBlog.updatedAt)
+  })
+
+  test('non existing id updates nothing', async () => {
+    await api
+      .delete('/api/blogs/111111111111111111111111')
+      .expect(204)
+  })
+})
