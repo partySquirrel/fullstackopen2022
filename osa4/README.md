@@ -7,8 +7,9 @@
 Create `.env` file and add with correct mongoDB connect url and password
 
 ```
-MONGODB_URI=mongodb+srv://fullmainuser:<password>@cluster0.xph8iaa.mongodb.net/phonebook?retryWrites=true&w=majority
-PORT=3001
+MONGODB_URI=mongodb+srv://fullmainuser:<password>@cluster0.xph8iaa.mongodb.net/bloglist?retryWrites=true&w=majority
+TEST_MONGODB_URI=mongodb+srv://fullmainuser<password>@cluster0.xph8iaa.mongodb.net/test_bloglist?retryWrites=true&w=majority
+PORT=3003
 ```
 
 ## Available Scripts
