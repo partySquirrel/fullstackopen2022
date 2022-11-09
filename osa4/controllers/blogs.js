@@ -1,72 +1,55 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 
-blogsRouter.get('/info', (request, response) => {
-  Blog.countDocuments({}).then(result => {
-    const info = `Blogs have ${result} entries.`
-    const date = new Date()
-    response.send(`<p>${info}</p><p>${date}</p>`)
-  })
+blogsRouter.get('/info', async (request, response) => {
+  const result = await Blog.countDocuments({})
+
+  const info = `Blogs have ${result} entries.`
+  const date = new Date()
+  response.send(`<p>${info}</p><p>${date}</p>`)
 })
 
-blogsRouter.get('/', (request, response) => {
-  Blog
-    .find({})
-    .then(blogs => {
-      response.json(blogs)
-    })
+blogsRouter.get('/', async (request, response) => {
+  const result = await Blog.find({})
+  response.json(result)
 })
 
-blogsRouter.get('/:id', (request, response, next) => {
-  Blog
-    .findById(request.params.id)
-    .then(blog => {
-      if (blog) {
-        response.json(blog)
-      } else {
-        response.status(404).end()
-      }
-    })
-    .catch(error => next(error))
+blogsRouter.get('/:id', async (request, response) => {
+  const result = await Blog.findById(request.params.id)
+
+  if (result) {
+    response.json(result)
+  } else {
+    response.status(404).end()
+  }
 })
 
-blogsRouter.post('/', (request, response, next) => {
+blogsRouter.post('/', async (request, response) => {
   const body = request.body
 
   const blog = new Blog({
     ...body,
   })
 
-  blog
-    .save()
-    .then(savedBlog => {
-      response.status(201).json(savedBlog)
-    })
-    .catch(error => next(error))
+  const result = await blog.save()
+  response.status(201).json(result)
 })
 
-blogsRouter.delete('/:id', (request, response, next) => {
-  Blog
-    .findByIdAndRemove(request.params.id)
-    .then(() => {
-      response.status(204).end()
-    })
-    .catch(error => next(error))
+blogsRouter.delete('/:id', async (request, response) => {
+  await Blog.findByIdAndRemove(request.params.id)
+  response.status(204).end()
 })
 
-blogsRouter.put('/:id', (request, response, next) => {
+blogsRouter.put('/:id', async (request, response) => {
   const { title, author, url } = request.body
   const id = request.params.id
 
-  Blog
+  const result = await Blog
     .findByIdAndUpdate(
       id,
       { title, author, url },
       { new: true, runValidators: true, context: 'query' })
-    .then(result => {
-      response.json(result)
-    })
-    .catch(error => next(error))
+  response.json(result)
 })
 
 module.exports = blogsRouter
