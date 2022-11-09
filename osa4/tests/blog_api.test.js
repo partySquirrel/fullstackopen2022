@@ -61,6 +61,12 @@ describe('when querying individual blog', () => {
       .expect(404)
   })
 
+  test('invalid id returns error', async () => {
+    await api
+      .get('/api/blogs/1')
+      .expect(400)
+  })
+
   test('response has blog id in field called id', async () => {
     const id = await existingId()
     const response = await api.get(`/api/blogs/${id}`)
