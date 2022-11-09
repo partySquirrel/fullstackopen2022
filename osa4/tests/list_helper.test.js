@@ -8,12 +8,43 @@ describe('total likes', () => {
   })
 
   test('when list has only one blog equals the likes of that', () => {
-    const result = listHelper.totalLikes(testBlogs.slice(0,1))
+    const result = listHelper.totalLikes(testBlogs.slice(0, 1))
     expect(result).toBe(7)
   })
 
-  test('when list has blogs blog equals the sum of likes', () => {
+  test('when list has multiple blogs equals the sum of likes', () => {
     const result = listHelper.totalLikes(testBlogs)
     expect(result).toBe(36)
+  })
+})
+
+describe('favorite blog', () => {
+  test('when list is empty returns empty object', () => {
+    const result = listHelper.favoriteBlog([])
+    expect(result).toEqual({})
+  })
+
+  test('when list has only one blog returns that', () => {
+    const result = listHelper.favoriteBlog(testBlogs.slice(0, 1))
+    expect(result).toEqual({
+      _id: "5a422a851b54a676234d17f7",
+      title: "React patterns",
+      author: "Michael Chan",
+      url: "https://reactpatterns.com/",
+      likes: 7,
+      __v: 0
+    })
+  })
+
+  test('when list has multiple blogs returns blog with most likes', () => {
+    const result = listHelper.favoriteBlog(testBlogs)
+    expect(result).toEqual({
+      _id: "5a422b3a1b54a676234d17f9",
+      title: "Canonical string reduction",
+      author: "Edsger W. Dijkstra",
+      url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+      likes: 12,
+      __v: 0
+    })
   })
 })
