@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
-const { initialBlogs, blogsInDb, existingId } = require('./dbData')
+const { initialBlogs, blogsInDb, existingBlogId } = require('./dbData')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
@@ -48,7 +48,7 @@ describe('when querying list of blogs', () => {
 
 describe('when querying individual blog', () => {
   test('blog is return with known id', async () => {
-    const id = await existingId()
+    const id = await existingBlogId()
     await api
       .get(`/api/blogs/${id}`)
       .expect(200)
@@ -68,7 +68,7 @@ describe('when querying individual blog', () => {
   })
 
   test('response has blog id in field called id', async () => {
-    const id = await existingId()
+    const id = await existingBlogId()
     const response = await api.get(`/api/blogs/${id}`)
 
     expect(response.body.id).toBeDefined()
@@ -121,7 +121,7 @@ describe('when adding new blog', () => {
 
 describe('when deleting a blog', () => {
   test('an existing blog is deleted', async () => {
-    const id = await existingId()
+    const id = await existingBlogId()
     await api
       .delete(`/api/blogs/${id}`)
       .expect(204)

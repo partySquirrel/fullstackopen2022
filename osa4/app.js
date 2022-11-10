@@ -5,6 +5,7 @@ const app = express()
 const cors = require('cors')
 const morgan = require('morgan')
 const blogsRouter = require('./controllers/blogs')
+const usersRouter = require('./controllers/users')
 const { apiErrorHandler, unknownEndpoint } = require('./utils/apiErrorHandler')
 
 // connect to mongo DB
@@ -18,6 +19,7 @@ morgan.token('body', (req) => JSON.stringify(req.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 app.use('/api/blogs', blogsRouter)
+app.use('/api/users', usersRouter)
 
 app.use(unknownEndpoint)
 app.use(apiErrorHandler)
