@@ -1,11 +1,28 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
-const { initialBlogs, blogsInDb, existingBlogId } = require('./dbData')
+const { initialBlogs, blogsInDb, existingBlogId, initialUsers, userToken } = require('./dbData')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
+const User = require('../models/user')
+
+let creatorToken
+let nonCreatorToken
 
 beforeEach(async () => {
+  await User.deleteMany({})
+  const result = await User.insertMany(initialUsers)
+
+  const creator = result[0]
+  const user = result[1]
+
+  creatorToken = userToken(creator)
+  nonCreatorToken = userToken(user)
+
+  initialBlogs.forEach(blog => {
+    blog.user = creator._id
+  })
+
   await Blog.deleteMany({})
   await Blog.insertMany(initialBlogs)
 })
@@ -77,7 +94,7 @@ describe('when querying individual blog', () => {
 })
 
 describe('when adding new blog', () => {
-  test('a valid blog is added ', async () => {
+  test('adding a blog requires authenticated user', async () => {
     const blog = {
       title: 'Added in tests',
       author: 'testrunner',
@@ -87,6 +104,24 @@ describe('when adding new blog', () => {
 
     await api
       .post('/api/blogs')
+      .send(blog)
+      .expect(401)
+
+    const inDb = await blogsInDb()
+    expect(inDb).toHaveLength(initialBlogs.length)
+  })
+
+  test('a valid blog is added when user is logged in', async () => {
+    const blog = {
+      title: 'Added in tests',
+      author: 'testrunner',
+      url: 'http://url.com',
+      likes: 3,
+    }
+
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `bearer ${creatorToken}`)
       .send(blog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -98,6 +133,7 @@ describe('when adding new blog', () => {
   test('invalid blog is not added', async () => {
     await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${creatorToken}`)
       .send({ author: 'foobar' })
       .expect(400)
 
@@ -113,6 +149,7 @@ describe('when adding new blog', () => {
     }
     const response = await api
       .post('/api/blogs')
+      .set('Authorization', `bearer ${creatorToken}`)
       .send(blog)
 
     expect(response.body.likes).toBe(0)
@@ -120,20 +157,42 @@ describe('when adding new blog', () => {
 })
 
 describe('when deleting a blog', () => {
-  test('an existing blog is deleted', async () => {
+  test('removing blog requires authenticated user', async () => {
     const id = await existingBlogId()
     await api
       .delete(`/api/blogs/${id}`)
+      .expect(401)
+
+    const inDb = await blogsInDb()
+    expect(inDb).toHaveLength(initialBlogs.length)
+  })
+  test('an existing blog is deleted if creator is authenticated user', async () => {
+    const id = await existingBlogId()
+    await api
+      .delete(`/api/blogs/${id}`)
+      .set('Authorization', `bearer ${creatorToken}`)
       .expect(204)
 
     const inDb = await blogsInDb()
     expect(inDb).toHaveLength(initialBlogs.length - 1)
   })
 
+  test('an existing blog is not deleted if authenticated user is not the creator', async () => {
+    const id = await existingBlogId()
+    await api
+      .delete(`/api/blogs/${id}`)
+      .set('Authorization', `bearer ${nonCreatorToken}`)
+      .expect(403)
+
+    const inDb = await blogsInDb()
+    expect(inDb).toHaveLength(initialBlogs.length)
+  })
+
   test('non existing id removes nothing', async () => {
     await api
       .delete('/api/blogs/111111111111111111111111')
-      .expect(204)
+      .set('Authorization', `bearer ${creatorToken}`)
+      .expect(404)
 
     const inDb = await blogsInDb()
     expect(inDb).toHaveLength(initialBlogs.length)
@@ -192,8 +251,19 @@ describe('when updating a blog', () => {
   })
 
   test('non existing id updates nothing', async () => {
+    const origs = await blogsInDb()
+
+    // to get dates as strings
+    const originalBlog = JSON.parse(JSON.stringify(origs[0]))
+
+    const blog = {
+      ...originalBlog,
+      likes: 666,
+    }
+
     await api
-      .delete('/api/blogs/111111111111111111111111')
-      .expect(204)
+      .put('/api/blogs/111111111111111111111111')
+      .send(blog)
+      .expect(404)
   })
 })

@@ -48,7 +48,7 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
 
   if (!blog) {
     response.status(404).end()
-  } else if ( blog.user.toString() === user.id ) {
+  } else if (blog.user.toString() === user.id) {
     blog.remove()
     response.status(204).end()
   } else {
@@ -60,12 +60,18 @@ blogsRouter.put('/:id', async (request, response) => {
   const { title, author, url, likes } = request.body
   const id = request.params.id
 
-  const result = await Blog
-    .findByIdAndUpdate(
-      id,
-      { title, author, url, likes },
-      { new: true, runValidators: true, context: 'query' })
-  response.json(result)
+  const blog = await Blog.findById(request.params.id)
+
+  if (!blog) {
+    response.status(404).end()
+  } else {
+    const result = await Blog
+      .findByIdAndUpdate(
+        id,
+        { title, author, url, likes },
+        { new: true, runValidators: true, context: 'query' })
+    response.json(result)
+  }
 })
 
 module.exports = blogsRouter
