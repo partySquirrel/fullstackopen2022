@@ -18,6 +18,14 @@ const userSchema = mongoose.Schema({
     maxlength: 1024,
     required: true
   },
+  blogs:
+    [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Blog'
+      }
+    ]
+  ,
 }, { timestamps: true })
 
 userSchema.set('toJSON', {
