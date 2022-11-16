@@ -7,7 +7,7 @@ const LoginForm = ({ onSubmit, onUsernameChange, username, onPasswordChange, pas
     </div>
     <div>
       <label>
-        Password: <input type="text" key="password" name="password" value={password} onChange={onPasswordChange}/>
+        Password: <input type="password" key="password" name="password" value={password} onChange={onPasswordChange}/>
       </label>
     </div>
     <div>
