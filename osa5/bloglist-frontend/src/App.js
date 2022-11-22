@@ -12,12 +12,7 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const loggedBlogUserKey = 'loggedBlogUser'
 
   useEffect(() => {
@@ -40,8 +35,7 @@ const App = () => {
     setSuccessMessage(`user logged out`)
   }
 
-  const handleAddBlog = async (event) => {
-    event.preventDefault()
+  const addBlog = async ({title, author, url}) => {
     try {
       const blog = await blogService.create(
         title,
@@ -52,15 +46,13 @@ const App = () => {
 
       setBlogs(blogs.concat(blog))
 
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-
       refBlogForm.current.toggleVisibility()
       setSuccessMessage(`a new blog ${blog.title} by ${blog.author} added`)
       setTimeout(() => {
         setSuccessMessage(null)
       }, 5000)
+
+      return blog
 
     } catch (exception) {
       console.log(exception)
@@ -71,8 +63,7 @@ const App = () => {
     }
   }
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
+  const handleLogin = async ({ username,password }) => {
     try {
       const user = await loginService.login({
         username, password,
@@ -83,39 +74,18 @@ const App = () => {
         loggedBlogUserKey, JSON.stringify(user)
       )
 
-      setUsername('')
-      setPassword('')
       setSuccessMessage(`login success`)
       setTimeout(() => {
         setSuccessMessage(null)
       }, 5000)
 
+      return user
     } catch (exception) {
       setErrorMessage('wrong credentials')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
     }
-  }
-
-  const handleInputUsernameChange = (event) => {
-    setUsername(event.target.value)
-  }
-
-  const handleInputPasswordChange = (event) => {
-    setPassword(event.target.value)
-  }
-
-  const handleInputTitleChange = (event) => {
-    setTitle(event.target.value)
-  }
-
-  const handleInputAuthorChange = (event) => {
-    setAuthor(event.target.value)
-  }
-
-  const handleInputUrlChange = (event) => {
-    setUrl(event.target.value)
   }
 
   const refBlogForm = useRef()
@@ -125,13 +95,7 @@ const App = () => {
       <Togglable buttonLabel='Add new blog' ref={refBlogForm}>
         <h2>Add new blog</h2>
         <BlogForm
-          onSubmit={handleAddBlog}
-          onTitleChange={handleInputTitleChange}
-          title={title}
-          onAuthorChange={handleInputAuthorChange}
-          author={author}
-          onUrlChange={handleInputUrlChange}
-          url={url}
+          onSubmit={addBlog}
         />
       </Togglable>
     )
@@ -143,10 +107,6 @@ const App = () => {
         <h2>Login</h2>
         <LoginForm
           onSubmit={handleLogin}
-          onUsernameChange={handleInputUsernameChange}
-          username={username}
-          onPasswordChange={handleInputPasswordChange}
-          password={password}
         />
       </div>
     )
