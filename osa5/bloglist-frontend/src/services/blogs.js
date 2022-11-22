@@ -26,9 +26,21 @@ const create = async (title, author, url, user) => {
   return response.data
 }
 
+const update = async (id, title, author, url, likes) => {
+  const blog = {
+    title: title,
+    author: author,
+    url: url,
+    likes: likes,
+  }
+  const response = await axios.put(`${baseUrl}/${id}`, blog)
+  return response.data
+}
+
 const blogService = {
   getAll,
   create,
+  update
 }
 
 export default blogService
