@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Blog = ({ blog, onLike }) => {
+const Blog = ({ blog, loggedInUser, onLike, onRemove }) => {
   const blogStyle = {
     padding: 10,
     border: 'solid',
@@ -24,6 +24,20 @@ const Blog = ({ blog, onLike }) => {
       newLikes)
   }
 
+  const handleRemove = async () => {
+    if (window.confirm(`Do you want to remove ${blog.name}?`)) {
+      onRemove(blog.id)
+    }
+  }
+
+  const deleteBlog = () => {
+    if (loggedInUser.username !== blog.user.username) return
+
+    return (
+      <button style={buttonStyle} onClick={() => handleRemove()}>Remove</button>
+    )
+  }
+
   const getDetails = () => {
     return (
       <>
@@ -34,6 +48,7 @@ const Blog = ({ blog, onLike }) => {
         {
           blog.user && <p>{blog.user.name}</p>
         }
+        {deleteBlog()}
       </>
     )
   }

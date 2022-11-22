@@ -66,7 +66,6 @@ const App = () => {
       return blog
 
     } catch (exception) {
-      console.log(exception)
       setErrorMessage(`failed to create blog: ${exception.response.data.error}`)
       setTimeout(() => {
         setErrorMessage(null)
@@ -91,8 +90,27 @@ const App = () => {
 
       return updated
     } catch (exception) {
-      console.log(exception)
       setErrorMessage(`failed to like blog: ${exception.response.data.error}`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
+  const handleRemoveBlog = async (id) => {
+    try {
+      const nukedBlog = blogs.filter(blog => blog.id === id)
+      await blogService.remove(
+        id,
+        user
+      )
+      updateBlogList(blogs.filter(blog => blog.id !== id))
+      setSuccessMessage(`Removed the blog ${nukedBlog.title} by ${nukedBlog.author}`)
+      setTimeout(() => {
+        setSuccessMessage(null)
+      }, 5000)
+    } catch (exception) {
+      setErrorMessage(`failed to remove blog: ${exception.response.data.error}`)
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -161,7 +179,7 @@ const App = () => {
       <div>
         <h2>List of blogs</h2>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} onLike={handleUpdateBlog}/>
+          <Blog key={blog.id} blog={blog} loggedInUser={user} onLike={handleUpdateBlog} onRemove={handleRemoveBlog}/>
         )}
       </div>
     )

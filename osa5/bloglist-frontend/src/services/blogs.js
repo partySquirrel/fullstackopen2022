@@ -26,6 +26,12 @@ const create = async (title, author, url, user) => {
   return response.data
 }
 
+const remove = async (id, user) => {
+  const config = getHeaderWithToken(user)
+  const response = await axios.delete(`${baseUrl}/${id}`, config)
+  return response
+}
+
 const update = async (id, title, author, url, likes) => {
   const blog = {
     title: title,
@@ -40,7 +46,8 @@ const update = async (id, title, author, url, likes) => {
 const blogService = {
   getAll,
   create,
-  update
+  update,
+  remove
 }
 
 export default blogService
