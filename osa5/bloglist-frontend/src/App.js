@@ -3,8 +3,8 @@ import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
-import BlogForm from "./components/BlogForm"
-import Togglable from "./components/Togglable"
+import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -25,9 +25,9 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs => {
-        sortBlogs(blogs)
-        setBlogs(blogs)
-      }
+      sortBlogs(blogs)
+      setBlogs(blogs)
+    }
     )
   }, [])
 
@@ -37,13 +37,13 @@ const App = () => {
   }
 
   function sortBlogs(bloglist) {
-    bloglist.sort((a, b) => b.likes - a.likes);
+    bloglist.sort((a, b) => b.likes - a.likes)
   }
 
   const handleLogout = async () => {
     window.localStorage.removeItem(loggedBlogUserKey)
     setUser(null)
-    setSuccessMessage(`user logged out`)
+    setSuccessMessage('user logged out')
   }
 
   const handleNewBlog = async ({ title, author, url }) => {
@@ -128,7 +128,7 @@ const App = () => {
         loggedBlogUserKey, JSON.stringify(user)
       )
 
-      setSuccessMessage(`login success`)
+      setSuccessMessage('login success')
       setTimeout(() => {
         setSuccessMessage(null)
       }, 5000)
