@@ -24,10 +24,21 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
+    blogService.getAll().then(blogs => {
+        sortBlogs(blogs)
+        setBlogs(blogs)
+      }
     )
   }, [])
+
+  function updateBlogList(bloglist) {
+    sortBlogs(bloglist)
+    setBlogs(bloglist)
+  }
+
+  function sortBlogs(bloglist) {
+    bloglist.sort((a, b) => b.likes - a.likes);
+  }
 
   const handleLogout = async () => {
     window.localStorage.removeItem(loggedBlogUserKey)
@@ -44,7 +55,7 @@ const App = () => {
         user,
       )
 
-      setBlogs(blogs.concat(blog))
+      updateBlogList(blogs.concat(blog))
 
       refBlogForm.current.toggleVisibility()
       setSuccessMessage(`a new blog ${blog.title} by ${blog.author} added`)
@@ -72,7 +83,7 @@ const App = () => {
         url,
         likes
       )
-      setBlogs(blogs.map(blog => blog.id === updated.id ? updated : blog))
+      updateBlogList(blogs.map(blog => blog.id === updated.id ? updated : blog))
       setSuccessMessage(`liked the blog ${updated.title} by ${updated.author}`)
       setTimeout(() => {
         setSuccessMessage(null)
