@@ -26,4 +26,9 @@ const create = async (title, author, url, user) => {
   return response.data
 }
 
-export default { getAll , create}
+const blogService = {
+  getAll,
+  create,
+}
+
+export default blogService

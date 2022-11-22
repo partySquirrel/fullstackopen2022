@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react'
+import React from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
+import BlogForm from "./components/BlogForm"
+import Togglable from "./components/Togglable"
 import blogService from './services/blogs'
 import loginService from './services/login'
-import BlogForm from "./components/BlogForm";
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -16,7 +18,7 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
-  const loggedBlogUserKey = 'loggedBlogUser';
+  const loggedBlogUserKey = 'loggedBlogUser'
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem(loggedBlogUserKey)
@@ -54,6 +56,7 @@ const App = () => {
       setAuthor('')
       setUrl('')
 
+      refBlogForm.current.toggleVisibility()
       setSuccessMessage(`a new blog ${blog.title} by ${blog.author} added`)
       setTimeout(() => {
         setSuccessMessage(null)
@@ -115,9 +118,11 @@ const App = () => {
     setUrl(event.target.value)
   }
 
+  const refBlogForm = useRef()
+
   const AddBlog = () => {
     return (
-      <div>
+      <Togglable buttonLabel='Add new blog' ref={refBlogForm}>
         <h2>Add new blog</h2>
         <BlogForm
           onSubmit={handleAddBlog}
@@ -128,7 +133,7 @@ const App = () => {
           onUrlChange={handleInputUrlChange}
           url={url}
         />
-      </div>
+      </Togglable>
     )
   }
 
