@@ -54,7 +54,7 @@ const Blog = ({ blog, loggedInUser, onLike, onRemove }) => {
     )
   }
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blogItem'>
       <p>
         <strong>{blog.title}</strong> by {blog.author}
         {showAll && <button style={buttonStyle} onClick={() => setShowAll(false)}>Hide</button>}
