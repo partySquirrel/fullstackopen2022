@@ -169,7 +169,7 @@ const App = () => {
   const Logout = () => {
     return (
       <p>
-        User {user.name} logged in. <button onClick={() => handleLogout()}>Log out</button>
+        User {user.name} logged in. <button onClick={() => handleLogout()} id="logout">Log out</button>
       </p>
     )
   }

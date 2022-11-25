@@ -35,7 +35,7 @@ const Blog = ({ blog, loggedInUser, onLike, onRemove }) => {
     if (loggedInUser.username !== blog.user.username) return
 
     return (
-      <button style={buttonStyle} onClick={() => handleRemove()}>Remove</button>
+      <button style={buttonStyle} onClick={() => handleRemove()} name='remove'>Remove</button>
     )
   }
 
@@ -44,7 +44,7 @@ const Blog = ({ blog, loggedInUser, onLike, onRemove }) => {
       <>
         <p><a href="{blog.url}">{blog.url}</a></p>
         <p>Likes: {blog.likes}
-          <button style={buttonStyle} onClick={() => handleLike()}>Like</button>
+          <button style={buttonStyle} onClick={() => handleLike()} name='like'>Like</button>
         </p>
         {
           blog.user && <p>{blog.user.name}</p>
