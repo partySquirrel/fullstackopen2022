@@ -2,9 +2,10 @@ const initialState = 'I am a notification!'
 
 const notificationReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'NEW':
-      return action.data
-    default: return state
+  case 'NEW':
+    return action.data
+  default:
+    return state
   }
 }
 

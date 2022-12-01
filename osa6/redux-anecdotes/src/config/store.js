@@ -1,7 +1,6 @@
-import React from 'react'
-import { configureStore } from "@reduxjs/toolkit"
-import anecdoteReducer from "../reducers/anecdoteReducer"
-import notificationReducer from "../reducers/notificationReducer"
+import { configureStore } from '@reduxjs/toolkit'
+import anecdoteReducer from '../reducers/anecdoteReducer'
+import notificationReducer from '../reducers/notificationReducer'
 
 const store = configureStore({
   reducer: {
