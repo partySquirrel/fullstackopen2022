@@ -5,15 +5,19 @@ describe('anecdoteReducer', () => {
   test('returns new state with action NEW', () => {
     const state = []
     const action = {
-      type: 'anecdotes/createAnecdote',
-      payload: 'vitsivitsi',
+      type: 'anecdotes/appendAnecdote',
+      payload: {
+        content: 'vitsivitsi',
+        id: 1,
+        votes: 0
+      }
     }
 
     deepFreeze(state)
     const newState = anecdoteReducer(state, action)
 
     expect(newState).toHaveLength(1)
-    expect(newState.map(s => s.content)).toContainEqual(action.payload)
+    expect(newState).toContainEqual(action.payload)
   })
 
   test('returns new state with action VOTE', () => {
