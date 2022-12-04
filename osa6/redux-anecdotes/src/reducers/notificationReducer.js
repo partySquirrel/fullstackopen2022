@@ -16,7 +16,7 @@ const notificationSlice = createSlice({
 })
 
 export const showNotification = (content, timeoutSeconds) => {
-  const millis = 1_000
+  const millis = 1000
   return (dispatch) => {
     dispatch(setNotification(content))
     setTimeout(() => {
