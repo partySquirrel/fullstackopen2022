@@ -15,11 +15,15 @@ const notificationSlice = createSlice({
   },
 })
 
+let timeoutID
 export const showNotification = (content, timeoutSeconds) => {
   const millis = 1000
   return (dispatch) => {
     dispatch(setNotification(content))
-    setTimeout(() => {
+
+    if (timeoutID !== undefined) clearTimeout(timeoutID)
+
+    timeoutID = setTimeout(() => {
       dispatch(clearNotification())
     }, timeoutSeconds * millis)
   }
