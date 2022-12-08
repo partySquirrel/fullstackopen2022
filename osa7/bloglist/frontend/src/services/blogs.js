@@ -32,14 +32,14 @@ const remove = async (id, user) => {
   return response
 }
 
-const update = async (id, title, author, url, likes) => {
-  const blog = {
-    title: title,
-    author: author,
-    url: url,
-    likes: likes,
+const update = async (blog) => {
+  const blogToUpdate = {
+    title: blog.title,
+    author: blog.author,
+    url: blog.url,
+    likes: blog.likes,
   }
-  const response = await axios.put(`${baseUrl}/${id}`, blog)
+  const response = await axios.put(`${baseUrl}/${blog.id}`, blogToUpdate)
   return response.data
 }
 

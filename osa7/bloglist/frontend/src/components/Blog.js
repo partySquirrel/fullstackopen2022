@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
+import { likeBlog, removeBlog } from '../reducers/blogReducer'
+import { showError, showNotification } from '../reducers/notificationReducer'
 
-const Blog = ({ blog, loggedInUser, onLike, onRemove }) => {
+const Blog = ({ blog, loggedInUser }) => {
   const blogStyle = {
     padding: 10,
     border: 'solid',
@@ -15,14 +18,36 @@ const Blog = ({ blog, loggedInUser, onLike, onRemove }) => {
 
   const [showAll, setShowAll] = useState(false)
 
+  const dispatch = useDispatch()
+
   const handleLike = async () => {
-    const newLikes = blog.likes + 1
-    onLike(blog.id, blog.title, blog.author, blog.url, newLikes)
+    dispatch(likeBlog(blog))
+      .then(() => {
+        dispatch(showNotification(`Liked '${blog.title}'`, 5))
+      })
+      .catch((error) => {
+        dispatch(
+          showError(`failed to like blog: ${error.response.data.error}`, 5)
+        )
+      })
   }
 
   const handleRemove = async () => {
-    if (window.confirm(`Do you want to remove ${blog.name}?`)) {
-      onRemove(blog.id)
+    if (window.confirm(`Do you want to remove ${blog.title}?`)) {
+      dispatch(removeBlog(blog, loggedInUser))
+        .then(() => {
+          dispatch(
+            showNotification(
+              `Removed the blog ${blog.title} by ${blog.author}`,
+              5
+            )
+          )
+        })
+        .catch((error) => {
+          dispatch(
+            showError(`failed to remove blog: ${error.response.data.error}`, 5)
+          )
+        })
     }
   }
 
@@ -77,7 +102,5 @@ const Blog = ({ blog, loggedInUser, onLike, onRemove }) => {
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   loggedInUser: PropTypes.object.isRequired,
-  onLike: PropTypes.func.isRequired,
-  onRemove: PropTypes.func.isRequired,
 }
 export default Blog
