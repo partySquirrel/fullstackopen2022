@@ -1,7 +1,11 @@
 describe('Blog App', function () {
   beforeEach(function () {
     cy.request('POST', 'http://localhost:3003/api/tests/reset')
-    cy.createUser({ username: 'cy-user', password: 'cy-password', name: 'Cy User' })
+    cy.createUser({
+      username: 'cy-user',
+      password: 'cy-password',
+      name: 'Cy User',
+    })
     cy.login({ username: 'cy-user', password: 'cy-password' })
   })
 
@@ -25,39 +29,36 @@ describe('Blog App', function () {
       })
 
       it('it can be viewed', function () {
-        cy.contains('another author cypress')
-          .contains('View')
-          .click()
+        cy.contains('another author cypress').contains('View').click()
 
-        cy.contains('another author cypress').parent()
+        cy.contains('another author cypress')
+          .parent()
           .should('contain', 'http://example.com/cy-url')
           .should('contain', 'Likes: 0')
       })
 
       it('it can be liked', function () {
-        cy.contains('another author cypress')
-          .contains('View')
-          .click()
+        cy.contains('another author cypress').contains('View').click()
 
-        cy.contains('another author cypress').parent()
+        cy.contains('another author cypress')
+          .parent()
           .find('button[name=like]')
           .click()
 
-        cy.contains('another author cypress').parent()
+        cy.contains('another author cypress')
+          .parent()
           .should('contain', 'Likes: 1')
       })
 
       it('it can be removed', function () {
-        cy.contains('another author cypress')
-          .contains('View')
-          .click()
+        cy.contains('another author cypress').contains('View').click()
 
-        cy.contains('another author cypress').parent()
+        cy.contains('another author cypress')
+          .parent()
           .find('button[name=remove]')
           .click()
 
-        cy.get('html')
-          .should('not.contain', 'another author cypress')
+        cy.get('html').should('not.contain', 'another author cypress')
       })
     })
 
@@ -96,19 +97,19 @@ describe('Blog App', function () {
       })
 
       it('blogs are sorted by likes', function () {
-        cy.get('.blogItem').eq(0)
+        cy.get('.blogItem')
+          .eq(0)
           .should('contain', 'ranked top')
           .should('contain', 'Likes: 2')
-        cy.get('.blogItem').eq(1)
+        cy.get('.blogItem')
+          .eq(1)
           .should('contain', 'ranked middle')
           .should('contain', 'Likes: 1')
-        cy.get('.blogItem').eq(2)
+        cy.get('.blogItem')
+          .eq(2)
           .should('contain', 'ranked bottom')
           .should('contain', 'Likes: 0')
       })
-
     })
-
-
   })
 })

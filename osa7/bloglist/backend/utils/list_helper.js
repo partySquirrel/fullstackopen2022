@@ -3,7 +3,10 @@ const totalLikes = (blogs) => {
 }
 
 const favoriteBlog = (blogs) => {
-  return blogs.reduce((topBlog, blog) => topBlog.likes > blog.likes ? topBlog : blog, {})
+  return blogs.reduce(
+    (topBlog, blog) => (topBlog.likes > blog.likes ? topBlog : blog),
+    {}
+  )
 }
 
 const mostBlogs = (blogs) => {
@@ -13,7 +16,7 @@ const mostBlogs = (blogs) => {
     const top = blogs.pop()
     return {
       author: top.author,
-      blogs: 1
+      blogs: 1,
     }
   }
   const mapByAuthor = blogs.reduce((map, blog) => {
@@ -21,14 +24,17 @@ const mostBlogs = (blogs) => {
     return map
   }, new Map())
 
-  const arrayByAuthor = [...mapByAuthor.keys()].map(author => {
+  const arrayByAuthor = [...mapByAuthor.keys()].map((author) => {
     return {
       author: author,
       blogs: mapByAuthor.get(author).length,
     }
   })
 
-  return arrayByAuthor.reduce((top, author) => top.blogs > author.blogs ? top : author, {})
+  return arrayByAuthor.reduce(
+    (top, author) => (top.blogs > author.blogs ? top : author),
+    {}
+  )
 }
 
 const mostLikes = (blogs) => {
@@ -38,7 +44,7 @@ const mostLikes = (blogs) => {
     const top = blogs.pop()
     return {
       author: top.author,
-      likes: top.likes
+      likes: top.likes,
     }
   }
   const mapByAuthor = blogs.reduce((map, blog) => {
@@ -46,19 +52,22 @@ const mostLikes = (blogs) => {
     return map
   }, new Map())
 
-  const likesByAuthor = [...mapByAuthor.keys()].map(author => {
+  const likesByAuthor = [...mapByAuthor.keys()].map((author) => {
     return {
       author: author,
       likes: totalLikes(mapByAuthor.get(author)),
     }
   })
 
-  return likesByAuthor.reduce((top, author) => top.likes > author.likes ? top : author, {})
+  return likesByAuthor.reduce(
+    (top, author) => (top.likes > author.likes ? top : author),
+    {}
+  )
 }
 
 module.exports = {
   totalLikes,
   favoriteBlog,
   mostBlogs,
-  mostLikes
+  mostLikes,
 }

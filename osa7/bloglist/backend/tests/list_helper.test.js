@@ -32,7 +32,7 @@ describe('favorite blog', () => {
       author: 'Michael Chan',
       url: 'https://reactpatterns.com/',
       likes: 7,
-      __v: 0
+      __v: 0,
     })
   })
 
@@ -44,7 +44,7 @@ describe('favorite blog', () => {
       author: 'Edsger W. Dijkstra',
       url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
       likes: 12,
-      __v: 0
+      __v: 0,
     })
   })
 })

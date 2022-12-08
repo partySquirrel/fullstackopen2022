@@ -16,17 +16,17 @@ describe('<Blog />', () => {
         likes: 2,
         user: {
           username: 'UserB',
-          name: 'User B'
-        }
+          name: 'User B',
+        },
       },
       loggedInUser: {
         name: 'User A',
-        username: 'UserA'
+        username: 'UserA',
       },
       onLike: likeHandler,
-      onRemove: jest.fn()
+      onRemove: jest.fn(),
     }
-    render(<Blog {...blog}/>).container
+    render(<Blog {...blog} />).container
   })
 
   test('renders empty blog', () => {
@@ -34,20 +34,21 @@ describe('<Blog />', () => {
       blog: {},
       loggedInUser: {},
       onLike: jest.fn(),
-      onRemove: jest.fn()
+      onRemove: jest.fn(),
     }
-    const { container } = render(<Blog {...blog}/>)
+    const { container } = render(<Blog {...blog} />)
     const element = container.querySelector('.blogItem')
     expect(element).toBeDefined()
   })
-
 
   test('renders only title and author by default', async () => {
     expect(screen.getByText('Title Y')).toBeDefined()
     expect(screen.getByText('by Author X')).toBeDefined()
     expect(screen.getByText('View')).toBeDefined()
 
-    expect(await screen.queryByText('http://example.com')).not.toBeInTheDocument()
+    expect(
+      await screen.queryByText('http://example.com')
+    ).not.toBeInTheDocument()
     expect(await screen.queryByText('User B')).not.toBeInTheDocument()
     expect(await screen.queryByText('Likes: 2')).not.toBeInTheDocument()
     expect(await screen.queryByText('Hide')).not.toBeInTheDocument()
@@ -80,4 +81,3 @@ describe('<Blog />', () => {
     expect(likeHandler.mock.calls).toHaveLength(2)
   })
 })
-

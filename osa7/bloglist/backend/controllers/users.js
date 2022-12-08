@@ -3,14 +3,22 @@ const bcrypt = require('bcrypt')
 const User = require('../models/user')
 
 usersRouter.get('/', async (request, response) => {
-  const result = await User.find({})
-    .populate('blogs', { title: 1, author: 1, url: 1, likes: 1 })
+  const result = await User.find({}).populate('blogs', {
+    title: 1,
+    author: 1,
+    url: 1,
+    likes: 1,
+  })
   response.json(result)
 })
 
 usersRouter.get('/:id', async (request, response) => {
-  const result = await User.findById(request.params.id)
-    .populate('blogs', { title: 1, author: 1, url: 1, likes: 1 })
+  const result = await User.findById(request.params.id).populate('blogs', {
+    title: 1,
+    author: 1,
+    url: 1,
+    likes: 1,
+  })
 
   if (result) {
     response.json(result)
@@ -24,14 +32,14 @@ usersRouter.post('/', async (request, response) => {
 
   if (!username || !password) {
     return response.status(400).json({
-      error: 'username or password is missing'
+      error: 'username or password is missing',
     })
   }
 
   const existingUser = await User.findOne({ username })
   if (existingUser) {
     return response.status(400).json({
-      error: 'username must be unique'
+      error: 'username must be unique',
     })
   }
 

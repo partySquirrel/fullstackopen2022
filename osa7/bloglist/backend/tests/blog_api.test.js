@@ -1,6 +1,12 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
-const { initialBlogs, blogsInDb, existingBlogId, initialUsers, userToken } = require('./dbData')
+const {
+  initialBlogs,
+  blogsInDb,
+  existingBlogId,
+  initialUsers,
+  userToken,
+} = require('./dbData')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
@@ -19,7 +25,7 @@ beforeEach(async () => {
   creatorToken = userToken(creator)
   nonCreatorToken = userToken(user)
 
-  initialBlogs.forEach(blog => {
+  initialBlogs.forEach((blog) => {
     blog.user = creator._id
   })
 
@@ -33,9 +39,7 @@ afterAll(() => {
 
 describe('when getting info', () => {
   test('info is returned', async () => {
-    await api
-      .get('/api/blogs/info')
-      .expect(200)
+    await api.get('/api/blogs/info').expect(200)
   })
 
   test('count of blogs is returned', async () => {
@@ -73,15 +77,11 @@ describe('when querying individual blog', () => {
   })
 
   test('unknown id does not return blog', async () => {
-    await api
-      .get('/api/blogs/111111111111111111111111')
-      .expect(404)
+    await api.get('/api/blogs/111111111111111111111111').expect(404)
   })
 
   test('invalid id returns error', async () => {
-    await api
-      .get('/api/blogs/1')
-      .expect(400)
+    await api.get('/api/blogs/1').expect(400)
   })
 
   test('response has blog id in field called id', async () => {
@@ -102,10 +102,7 @@ describe('when adding new blog', () => {
       likes: 3,
     }
 
-    await api
-      .post('/api/blogs')
-      .send(blog)
-      .expect(401)
+    await api.post('/api/blogs').send(blog).expect(401)
 
     const inDb = await blogsInDb()
     expect(inDb).toHaveLength(initialBlogs.length)
@@ -159,9 +156,7 @@ describe('when adding new blog', () => {
 describe('when deleting a blog', () => {
   test('removing blog requires authenticated user', async () => {
     const id = await existingBlogId()
-    await api
-      .delete(`/api/blogs/${id}`)
-      .expect(401)
+    await api.delete(`/api/blogs/${id}`).expect(401)
 
     const inDb = await blogsInDb()
     expect(inDb).toHaveLength(initialBlogs.length)
@@ -261,9 +256,6 @@ describe('when updating a blog', () => {
       likes: 666,
     }
 
-    await api
-      .put('/api/blogs/111111111111111111111111')
-      .send(blog)
-      .expect(404)
+    await api.put('/api/blogs/111111111111111111111111').send(blog).expect(404)
   })
 })

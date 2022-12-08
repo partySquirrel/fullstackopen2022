@@ -12,5 +12,5 @@ const userExtractor = async (request, response, next) => {
 }
 
 module.exports = {
-  userExtractor
+  userExtractor,
 }

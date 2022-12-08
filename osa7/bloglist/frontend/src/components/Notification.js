@@ -7,15 +7,11 @@ const Notification = ({ message, severity }) => {
 
   const styles = `notification ${severity}`
 
-  return (
-    <div className={styles}>
-      {message}
-    </div>
-  )
+  return <div className={styles}>{message}</div>
 }
 
 Notification.propTypes = {
   message: PropTypes.string,
-  severity: PropTypes.string
+  severity: PropTypes.string,
 }
 export default Notification

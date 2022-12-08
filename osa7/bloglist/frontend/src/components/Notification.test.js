@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 import Notification from './Notification'
 
 test('renders content', () => {
-  render(<Notification message="hello" severity="info"/>)
+  render(<Notification message="hello" severity="info" />)
   const element = screen.getByText('hello')
   expect(element).toBeDefined()
 })

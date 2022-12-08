@@ -9,7 +9,7 @@ describe('<LoginForm />', () => {
   const onSubmitHandler = jest.fn()
 
   beforeEach(() => {
-    container = render(<LoginForm onSubmit={onSubmitHandler}/>).container
+    container = render(<LoginForm onSubmit={onSubmitHandler} />).container
   })
 
   test('renders form', () => {
@@ -34,7 +34,7 @@ describe('<LoginForm />', () => {
     expect(onSubmitHandler.mock.calls).toHaveLength(1)
     expect(onSubmitHandler.mock.calls[0][0]).toMatchObject({
       username: 'userA',
-      password: 'passwordA'
+      password: 'passwordA',
     })
   })
 })

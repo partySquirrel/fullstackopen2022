@@ -6,7 +6,10 @@ module.exports = {
     'node': true,
     'jest': true,
   },
-  'extends': 'eslint:recommended',
+  'extends': [
+    'eslint:recommended',
+    'prettier'
+  ],
   'overrides': [],
   'parserOptions': {
     'ecmaVersion': 'latest'
@@ -38,4 +41,5 @@ module.exports = {
     ],
     'no-console': 0,
   }
+
 }

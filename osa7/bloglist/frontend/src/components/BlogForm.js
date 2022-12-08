@@ -2,7 +2,6 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 
 const BlogForm = ({ onSubmit }) => {
-
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -34,17 +33,38 @@ const BlogForm = ({ onSubmit }) => {
     <form onSubmit={handleAddBlog} className="blogForm">
       <div>
         <label>
-          Title: <input type="text" name="title" value={title} onChange={handleInputTitleChange} placeholder="title of the blog"/>
+          Title:{' '}
+          <input
+            type="text"
+            name="title"
+            value={title}
+            onChange={handleInputTitleChange}
+            placeholder="title of the blog"
+          />
         </label>
       </div>
       <div>
         <label>
-          Author: <input type="text" name="author" value={author} onChange={handleInputAuthorChange} placeholder="author of the blog"/>
+          Author:{' '}
+          <input
+            type="text"
+            name="author"
+            value={author}
+            onChange={handleInputAuthorChange}
+            placeholder="author of the blog"
+          />
         </label>
       </div>
       <div>
         <label>
-          URL: <input type="text" name="url" value={url} onChange={handleInputUrlChange} placeholder="url of the blog"/>
+          URL:{' '}
+          <input
+            type="text"
+            name="url"
+            value={url}
+            onChange={handleInputUrlChange}
+            placeholder="url of the blog"
+          />
         </label>
       </div>
       <div>
@@ -55,6 +75,6 @@ const BlogForm = ({ onSubmit }) => {
 }
 
 BlogForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired,
 }
 export default BlogForm

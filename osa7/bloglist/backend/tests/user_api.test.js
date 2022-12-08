@@ -43,15 +43,11 @@ describe('when querying individual user', () => {
   })
 
   test('unknown id does not return user', async () => {
-    await api
-      .get('/api/users/111111111111111111111111')
-      .expect(404)
+    await api.get('/api/users/111111111111111111111111').expect(404)
   })
 
   test('invalid id returns error', async () => {
-    await api
-      .get('/api/users/1')
-      .expect(400)
+    await api.get('/api/users/1').expect(400)
   })
 
   test('response has user id in field called id', async () => {
@@ -66,9 +62,9 @@ describe('when querying individual user', () => {
 describe('when adding new user', () => {
   test('a valid user is added ', async () => {
     const user = {
-      username:'tester',
+      username: 'tester',
       name: 'Test Runner',
-      password: 'testz'
+      password: 'testz',
     }
 
     await api
@@ -95,14 +91,11 @@ describe('when adding new user', () => {
 
   test('user with duplicate username is not added', async () => {
     const user = {
-      username:'foobar',
+      username: 'foobar',
       name: 'Foo Bar 2',
-      password: 'foobaz2'
+      password: 'foobaz2',
     }
-    const response = await api
-      .post('/api/users')
-      .send(user)
-      .expect(400)
+    const response = await api.post('/api/users').send(user).expect(400)
 
     expect(response.body.error).toContain('username must be unique')
   })
@@ -111,18 +104,14 @@ describe('when adding new user', () => {
 describe('when deleting a user', () => {
   test('an existing user is deleted', async () => {
     const id = await existingUserId()
-    await api
-      .delete(`/api/users/${id}`)
-      .expect(204)
+    await api.delete(`/api/users/${id}`).expect(204)
 
     const inDb = await usersInDb()
     expect(inDb).toHaveLength(initialUsers.length - 1)
   })
 
   test('non existing id removes nothing', async () => {
-    await api
-      .delete('/api/users/111111111111111111111111')
-      .expect(204)
+    await api.delete('/api/users/111111111111111111111111').expect(204)
 
     const inDb = await usersInDb()
     expect(inDb).toHaveLength(initialUsers.length)

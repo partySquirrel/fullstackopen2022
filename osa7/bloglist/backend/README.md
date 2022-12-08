@@ -1,6 +1,4 @@
-
 # Blog
-
 
 ## Setup
 

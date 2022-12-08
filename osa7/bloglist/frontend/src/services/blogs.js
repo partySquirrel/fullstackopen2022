@@ -47,7 +47,7 @@ const blogService = {
   getAll,
   create,
   update,
-  remove
+  remove,
 }
 
 export default blogService

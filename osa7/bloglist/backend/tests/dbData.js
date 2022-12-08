@@ -18,35 +18,37 @@ const initialBlogs = [
 ]
 const initialUsers = [
   {
-    username:'foobar',
+    username: 'foobar',
     name: 'Foo Bar',
-    passwordHash: '$2b$10$GiVMWCspZyCWjQl9MV2u1.Umt4DTKQzFjPnFe1SjzkqDnqomzw/ga',
+    passwordHash:
+      '$2b$10$GiVMWCspZyCWjQl9MV2u1.Umt4DTKQzFjPnFe1SjzkqDnqomzw/ga',
   },
   {
-    username:'yolo',
+    username: 'yolo',
     name: 'Yolo Fomo',
-    passwordHash: '$2b$10$GiVMWCspZyCWjQl9MV2u1.Umt4DTKQzFjPnFe1SjzkqDnqomzw/ga',
+    passwordHash:
+      '$2b$10$GiVMWCspZyCWjQl9MV2u1.Umt4DTKQzFjPnFe1SjzkqDnqomzw/ga',
   },
 ]
 
 const blogsInDb = async () => {
   const blogs = await Blog.find({})
-  return blogs.map(blog => blog.toJSON())
+  return blogs.map((blog) => blog.toJSON())
 }
 
 const existingBlogId = async () => {
   const blogs = await Blog.find({})
-  return blogs.map(blog => blog.toJSON())[0].id
+  return blogs.map((blog) => blog.toJSON())[0].id
 }
 
 const usersInDb = async () => {
   const users = await User.find({})
-  return users.map(user => user.toJSON())
+  return users.map((user) => user.toJSON())
 }
 
 const existingUserId = async () => {
   const users = await User.find({})
-  return users.map(user => user.toJSON())[0].id
+  return users.map((user) => user.toJSON())[0].id
 }
 
 const userToken = (user) => {
@@ -55,12 +57,14 @@ const userToken = (user) => {
     id: user._id,
   }
 
-  return jwt.sign(
-    userForToken,
-    process.env.SECRET,
-    { expiresIn: 5 }
-  )
+  return jwt.sign(userForToken, process.env.SECRET, { expiresIn: 5 })
 }
 module.exports = {
-  initialBlogs, blogsInDb, existingBlogId, initialUsers, usersInDb, existingUserId, userToken
+  initialBlogs,
+  blogsInDb,
+  existingBlogId,
+  initialUsers,
+  usersInDb,
+  existingUserId,
+  userToken,
 }

@@ -24,11 +24,10 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    blogService.getAll().then(blogs => {
+    blogService.getAll().then((blogs) => {
       sortBlogs(blogs)
       setBlogs(blogs)
-    }
-    )
+    })
   }, [])
 
   function updateBlogList(bloglist) {
@@ -48,12 +47,7 @@ const App = () => {
 
   const handleNewBlog = async ({ title, author, url }) => {
     try {
-      const blog = await blogService.create(
-        title,
-        author,
-        url,
-        user,
-      )
+      const blog = await blogService.create(title, author, url, user)
 
       updateBlogList(blogs.concat(blog))
 
@@ -64,7 +58,6 @@ const App = () => {
       }, 5000)
 
       return blog
-
     } catch (exception) {
       setErrorMessage(`failed to create blog: ${exception.response.data.error}`)
       setTimeout(() => {
@@ -75,14 +68,10 @@ const App = () => {
 
   const handleUpdateBlog = async (id, title, author, url, likes) => {
     try {
-      const updated = await blogService.update(
-        id,
-        title,
-        author,
-        url,
-        likes
+      const updated = await blogService.update(id, title, author, url, likes)
+      updateBlogList(
+        blogs.map((blog) => (blog.id === updated.id ? updated : blog))
       )
-      updateBlogList(blogs.map(blog => blog.id === updated.id ? updated : blog))
       setSuccessMessage(`liked the blog ${updated.title} by ${updated.author}`)
       setTimeout(() => {
         setSuccessMessage(null)
@@ -99,13 +88,12 @@ const App = () => {
 
   const handleRemoveBlog = async (id) => {
     try {
-      const nukedBlog = blogs.filter(blog => blog.id === id)
-      await blogService.remove(
-        id,
-        user
+      const nukedBlog = blogs.filter((blog) => blog.id === id)
+      await blogService.remove(id, user)
+      updateBlogList(blogs.filter((blog) => blog.id !== id))
+      setSuccessMessage(
+        `Removed the blog ${nukedBlog.title} by ${nukedBlog.author}`
       )
-      updateBlogList(blogs.filter(blog => blog.id !== id))
-      setSuccessMessage(`Removed the blog ${nukedBlog.title} by ${nukedBlog.author}`)
       setTimeout(() => {
         setSuccessMessage(null)
       }, 5000)
@@ -120,13 +108,12 @@ const App = () => {
   const handleLogin = async ({ username, password }) => {
     try {
       const user = await loginService.login({
-        username, password,
+        username,
+        password,
       })
       setUser(user)
 
-      window.localStorage.setItem(
-        loggedBlogUserKey, JSON.stringify(user)
-      )
+      window.localStorage.setItem(loggedBlogUserKey, JSON.stringify(user))
 
       setSuccessMessage('login success')
       setTimeout(() => {
@@ -146,11 +133,9 @@ const App = () => {
 
   const AddBlog = () => {
     return (
-      <Togglable buttonLabel='Add new blog' ref={refBlogForm}>
+      <Togglable buttonLabel="Add new blog" ref={refBlogForm}>
         <h2>Add new blog</h2>
-        <BlogForm
-          onSubmit={handleNewBlog}
-        />
+        <BlogForm onSubmit={handleNewBlog} />
       </Togglable>
     )
   }
@@ -159,9 +144,7 @@ const App = () => {
     return (
       <div>
         <h2>Login</h2>
-        <LoginForm
-          onSubmit={handleLogin}
-        />
+        <LoginForm onSubmit={handleLogin} />
       </div>
     )
   }
@@ -169,7 +152,10 @@ const App = () => {
   const Logout = () => {
     return (
       <p>
-        User {user.name} logged in. <button onClick={() => handleLogout()} id="logout">Log out</button>
+        User {user.name} logged in.{' '}
+        <button onClick={() => handleLogout()} id="logout">
+          Log out
+        </button>
       </p>
     )
   }
@@ -178,9 +164,15 @@ const App = () => {
     return (
       <div>
         <h2>List of blogs</h2>
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} loggedInUser={user} onLike={handleUpdateBlog} onRemove={handleRemoveBlog}/>
-        )}
+        {blogs.map((blog) => (
+          <Blog
+            key={blog.id}
+            blog={blog}
+            loggedInUser={user}
+            onLike={handleUpdateBlog}
+            onRemove={handleRemoveBlog}
+          />
+        ))}
       </div>
     )
   }
@@ -189,14 +181,13 @@ const App = () => {
     <div>
       <h1>Blogs</h1>
 
-      <Notification message={errorMessage} severity="error"/>
-      <Notification message={successMessage} severity="success"/>
+      <Notification message={errorMessage} severity="error" />
+      <Notification message={successMessage} severity="success" />
 
       {user === null && Login()}
       {user !== null && Logout()}
       {user !== null && AddBlog()}
       {user !== null && Blogs()}
-
     </div>
   )
 }

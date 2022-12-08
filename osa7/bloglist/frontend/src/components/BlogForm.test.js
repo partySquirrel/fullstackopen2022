@@ -9,7 +9,7 @@ describe('<BlogForm />', () => {
   const onSubmitHandler = jest.fn()
 
   beforeEach(() => {
-    container = render(<BlogForm onSubmit={onSubmitHandler}/>).container
+    container = render(<BlogForm onSubmit={onSubmitHandler} />).container
   })
 
   test('renders form', () => {
@@ -28,9 +28,18 @@ describe('<BlogForm />', () => {
     const user = userEvent.setup()
     const submit = screen.getByText('Create')
 
-    await user.type(screen.getByPlaceholderText('author of the blog'), 'Blogger')
-    await user.type(screen.getByPlaceholderText('title of the blog'), 'Bloggity Blog')
-    await user.type(screen.getByPlaceholderText('url of the blog'), 'http://example.com/blog')
+    await user.type(
+      screen.getByPlaceholderText('author of the blog'),
+      'Blogger'
+    )
+    await user.type(
+      screen.getByPlaceholderText('title of the blog'),
+      'Bloggity Blog'
+    )
+    await user.type(
+      screen.getByPlaceholderText('url of the blog'),
+      'http://example.com/blog'
+    )
     await user.click(submit)
 
     expect(onSubmitHandler.mock.calls).toHaveLength(1)

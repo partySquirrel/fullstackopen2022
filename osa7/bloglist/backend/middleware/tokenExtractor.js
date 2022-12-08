@@ -1,4 +1,4 @@
-const getTokenFrom = request => {
+const getTokenFrom = (request) => {
   const authorization = request.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     return authorization.substring(7)
@@ -13,5 +13,5 @@ const tokenExtractor = (request, response, next) => {
 }
 
 module.exports = {
-  tokenExtractor
+  tokenExtractor,
 }
