@@ -7,10 +7,11 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUser } from './reducers/loginReducer'
 import LogoutForm from './components/LogoutForm'
 import { initializeUsers } from './reducers/userReducer'
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route, Link, Navigate } from 'react-router-dom'
 import Blogs from './components/Blogs'
 import UserList from './components/UserList'
 import User from './components/User'
+import Blog from './components/Blog'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -46,9 +47,22 @@ const App = () => {
       {user !== null && <LogoutForm />}
 
       <Routes>
-        <Route path="/blogs" element={<Blogs />} />
-        <Route path="/users/:id" element={<User />} />
-        <Route path="/users" element={<UserList />} />
+        <Route
+          path="/blogs/:id"
+          element={user ? <Blog /> : <Navigate replace to="/" />}
+        />
+        <Route
+          path="/blogs"
+          element={user ? <Blogs /> : <Navigate replace to="/" />}
+        />
+        <Route
+          path="/users/:id"
+          element={user ? <User /> : <Navigate replace to="/" />}
+        />
+        <Route
+          path="/users"
+          element={user ? <UserList /> : <Navigate replace to="/" />}
+        />
         <Route path="/" element={<Home />} />
       </Routes>
     </div>

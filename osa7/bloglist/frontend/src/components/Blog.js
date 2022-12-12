@@ -1,10 +1,22 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import { showError, showNotification } from '../reducers/notificationReducer'
+import { useParams } from 'react-router-dom'
 
-const Blog = ({ blog }) => {
+const Blog = () => {
+  const id = useParams().id
+  let blog = null
+
+  if (id) {
+    const blogs = useSelector((state) => state.blogs)
+    blog = blogs.find((b) => b.id === id)
+  }
+
+  if (!blog) {
+    return null
+  }
+
   const loggedInUser = useSelector((state) => state.loggedInUser)
 
   const blogStyle = {
@@ -17,8 +29,6 @@ const Blog = ({ blog }) => {
   const buttonStyle = {
     marginLeft: 5,
   }
-
-  const [showAll, setShowAll] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -84,24 +94,10 @@ const Blog = ({ blog }) => {
     <div style={blogStyle} className="blogItem">
       <p>
         <strong>{blog.title}</strong> by {blog.author}
-        {showAll && (
-          <button style={buttonStyle} onClick={() => setShowAll(false)}>
-            Hide
-          </button>
-        )}
-        {!showAll && (
-          <button style={buttonStyle} onClick={() => setShowAll(true)}>
-            View
-          </button>
-        )}
       </p>
-
-      {showAll && getDetails()}
+      {getDetails()}
     </div>
   )
 }
 
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-}
 export default Blog
