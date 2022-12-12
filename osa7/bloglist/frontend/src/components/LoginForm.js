@@ -1,68 +1,54 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
+import { useField } from '../hooks'
+import { showError, showNotification } from '../reducers/notificationReducer'
+import { loginUser } from '../reducers/loginReducer'
+import { useDispatch } from 'react-redux'
 
-const LoginForm = ({ onSubmit }) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+const LoginForm = () => {
+  const username = useField('text')
+  const password = useField('password')
 
-  const handleInputUsernameChange = (event) => {
-    setUsername(event.target.value)
-  }
-
-  const handleInputPasswordChange = (event) => {
-    setPassword(event.target.value)
-  }
+  const dispatch = useDispatch()
 
   const handleLogin = async (event) => {
     event.preventDefault()
 
-    const user = await onSubmit({ username, password })
-    if (user) {
-      setUsername('')
-      setPassword('')
-    }
+    dispatch(loginUser(username.value, password.value))
+      .then(() => {
+        dispatch(showNotification('login success', 5))
+        username.onReset()
+        password.onReset()
+      })
+      .catch(() => {
+        dispatch(showError('wrong credentials', 5))
+      })
   }
 
   return (
-    <form onSubmit={handleLogin} className="loginForm">
-      <div>
-        <label>
-          Username:{' '}
-          <input
-            type="text"
-            id="username"
-            key="username"
-            name="username"
-            value={username}
-            onChange={handleInputUsernameChange}
-            placeholder="your username"
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Password:{' '}
-          <input
-            type="password"
-            id="password"
-            key="password"
-            name="password"
-            value={password}
-            onChange={handleInputPasswordChange}
-            placeholder="your password"
-          />
-        </label>
-      </div>
-      <div>
-        <button type="submit" id="login">
-          Login
-        </button>
-      </div>
-    </form>
+    <div>
+      <h2>Login</h2>
+
+      <form onSubmit={handleLogin} className="loginForm">
+        <div>
+          <label>
+            Username:{' '}
+            <input name="username" placeholder="username" {...username} />
+          </label>
+        </div>
+        <div>
+          <label>
+            Password:{' '}
+            <input name="password" placeholder="password" {...password} />
+          </label>
+        </div>
+        <div>
+          <button type="submit" id="login">
+            Login
+          </button>
+        </div>
+      </form>
+    </div>
   )
 }
 
-LoginForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-}
 export default LoginForm

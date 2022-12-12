@@ -1,12 +1,12 @@
-import PropTypes from 'prop-types'
 import { useField } from '../hooks'
 import { showError, showNotification } from '../reducers/notificationReducer'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import React, { useRef } from 'react'
 import Togglable from './Togglable'
 
-const BlogForm = ({ loggedInUser }) => {
+const BlogForm = () => {
+  const loggedInUser = useSelector((state) => state.loggedInUser)
   const title = useField('text')
   const author = useField('text')
   const url = useField('text')
@@ -72,7 +72,4 @@ const BlogForm = ({ loggedInUser }) => {
   )
 }
 
-BlogForm.propTypes = {
-  loggedInUser: PropTypes.object.isRequired,
-}
 export default BlogForm

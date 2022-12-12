@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import { showError, showNotification } from '../reducers/notificationReducer'
 
-const Blog = ({ blog, loggedInUser }) => {
+const Blog = ({ blog }) => {
+  const loggedInUser = useSelector((state) => state.loggedInUser)
+
   const blogStyle = {
     padding: 10,
     border: 'solid',
@@ -101,6 +103,5 @@ const Blog = ({ blog, loggedInUser }) => {
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  loggedInUser: PropTypes.object.isRequired,
 }
 export default Blog
