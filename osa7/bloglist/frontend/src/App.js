@@ -10,6 +10,7 @@ import { initializeUsers } from './reducers/userReducer'
 import { Routes, Route, Link } from 'react-router-dom'
 import Blogs from './components/Blogs'
 import UserList from './components/UserList'
+import User from './components/User'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -46,6 +47,7 @@ const App = () => {
 
       <Routes>
         <Route path="/blogs" element={<Blogs />} />
+        <Route path="/users/:id" element={<User />} />
         <Route path="/users" element={<UserList />} />
         <Route path="/" element={<Home />} />
       </Routes>
