@@ -8,12 +8,17 @@ import { initializeBlogs } from './reducers/blogReducer'
 import BlogList from './components/BlogList'
 import { initializeUser } from './reducers/loginReducer'
 import LogoutForm from './components/LogoutForm'
+import { initializeUsers } from './reducers/userReducer'
 
 const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(initializeBlogs())
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(initializeUsers())
   }, [dispatch])
 
   useEffect(() => {
