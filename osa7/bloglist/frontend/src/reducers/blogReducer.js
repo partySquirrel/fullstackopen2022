@@ -57,7 +57,7 @@ export const commentBlog = (blog, comment) => {
   return async (dispatch) => {
     const updated = {
       ...blog,
-      comments: [blog.comments].push(comment)
+      comments: [...blog.comments, comment],
     }
     await blogService.update(updated)
     dispatch(blogSlice.actions.updateBlog(updated))

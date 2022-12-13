@@ -5,7 +5,6 @@ import LoginForm from './components/LoginForm'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUser } from './reducers/loginReducer'
-import LogoutForm from './components/LogoutForm'
 import { initializeUsers } from './reducers/userReducer'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Blogs from './components/Blogs'
@@ -41,7 +40,6 @@ const App = () => {
       <Notification />
 
       {user === null && <LoginForm />}
-      {user !== null && <LogoutForm />}
 
       <Routes>
         <Route

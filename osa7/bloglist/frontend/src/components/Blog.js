@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import { showError, showNotification } from '../reducers/notificationReducer'
 import { useParams } from 'react-router-dom'
+import CommentForm from './CommentForm'
 
 const Blog = () => {
   const id = useParams().id
@@ -90,6 +91,7 @@ const Blog = () => {
       {blog.user && <p>{blog.user.name}</p>}
       {deleteBlog()}
       <h3>Comments</h3>
+      <CommentForm blog={blog} />
       <div>
         <ul>
           {blog.comments.map((comment, index) => (
