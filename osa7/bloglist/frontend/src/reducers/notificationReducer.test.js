@@ -26,6 +26,6 @@ describe('notificationReducer', () => {
     deepFreeze(state)
     const newState = notificationReducer(state, action)
 
-    expect(newState).toEqual('')
+    expect(newState).toEqual(null)
   })
 })

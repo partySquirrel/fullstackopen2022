@@ -3,6 +3,9 @@ import { useField } from '../hooks'
 import { showError, showNotification } from '../reducers/notificationReducer'
 import { useDispatch } from 'react-redux'
 import { commentBlog } from '../reducers/blogReducer'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+import { InputGroup } from 'react-bootstrap'
 
 const CommentForm = ({ blog }) => {
   if (!blog) return null
@@ -27,18 +30,19 @@ const CommentForm = ({ blog }) => {
   }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit} className="commentForm">
-        <div>
-          <label>
-            <input name="comment" placeholder="comment" {...comment} />
-          </label>
-          <button type="submit" id="save">
-            Add comment
-          </button>
-        </div>
-      </form>
-    </div>
+    <Form onSubmit={handleSubmit}>
+      <InputGroup className="mb-3">
+        <Form.Control
+          placeholder="Enter comment"
+          aria-label="Enter comment"
+          aria-describedby="comment"
+          {...comment}
+        />
+        <Button type="submit" variant="primary" id="button-comment">
+          Add Comment
+        </Button>
+      </InputGroup>
+    </Form>
   )
 }
 

@@ -12,6 +12,7 @@ import UserList from './components/UserList'
 import User from './components/User'
 import Blog from './components/Blog'
 import Navigation from './components/Navigation'
+import { Container, Row, Stack } from 'react-bootstrap'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -33,34 +34,42 @@ const App = () => {
   const Home = () => <div></div>
 
   return (
-    <div className="container">
+    <>
       <Navigation />
 
-      <h1>Blogs</h1>
-      <Notification />
-
-      {user === null && <LoginForm />}
-
-      <Routes>
-        <Route
-          path="/blogs/:id"
-          element={user ? <Blog /> : <Navigate replace to="/" />}
-        />
-        <Route
-          path="/blogs"
-          element={user ? <Blogs /> : <Navigate replace to="/" />}
-        />
-        <Route
-          path="/users/:id"
-          element={user ? <User /> : <Navigate replace to="/" />}
-        />
-        <Route
-          path="/users"
-          element={user ? <UserList /> : <Navigate replace to="/" />}
-        />
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </div>
+      <Container fluid="sm">
+        <Stack gap={3}>
+          <Row>
+            <Notification />
+          </Row>
+          <Row>{user === null && <LoginForm />}</Row>
+          <Row>
+            <Routes>
+              <Route
+                path="/blogs/:id"
+                element={user ? <Blog /> : <Navigate replace to="/" />}
+              />
+              <Route
+                path="/blogs"
+                element={user ? <Blogs /> : <Navigate replace to="/" />}
+              />
+              <Route
+                path="/users/:id"
+                element={user ? <User /> : <Navigate replace to="/" />}
+              />
+              <Route
+                path="/users"
+                element={user ? <UserList /> : <Navigate replace to="/" />}
+              />
+              <Route
+                path="/"
+                element={!user ? <Home /> : <Navigate replace to="/blogs" />}
+              />
+            </Routes>
+          </Row>
+        </Stack>
+      </Container>
+    </>
   )
 }
 

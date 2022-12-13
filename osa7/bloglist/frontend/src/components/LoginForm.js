@@ -4,6 +4,9 @@ import { showError, showNotification } from '../reducers/notificationReducer'
 import { loginUser } from '../reducers/loginReducer'
 import { useDispatch } from 'react-redux'
 
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+
 const LoginForm = () => {
   const username = useField('text')
   const password = useField('password')
@@ -28,25 +31,20 @@ const LoginForm = () => {
     <div>
       <h2>Login</h2>
 
-      <form onSubmit={handleLogin} className="loginForm">
-        <div>
-          <label>
-            Username:{' '}
-            <input name="username" placeholder="username" {...username} />
-          </label>
-        </div>
-        <div>
-          <label>
-            Password:{' '}
-            <input name="password" placeholder="password" {...password} />
-          </label>
-        </div>
-        <div>
-          <button type="submit" id="login">
-            Login
-          </button>
-        </div>
-      </form>
+      <Form onSubmit={handleLogin}>
+        <Form.Group className="mb-3">
+          <Form.Label>Username</Form.Label>
+          <Form.Control placeholder="Enter username" {...username} />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>Password</Form.Label>
+          <Form.Control {...password} type="password" placeholder="Password" />
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Login
+        </Button>
+      </Form>
     </div>
   )
 }

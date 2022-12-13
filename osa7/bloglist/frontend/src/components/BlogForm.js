@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import React, { useRef } from 'react'
 import Togglable from './Togglable'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 const BlogForm = () => {
   const loggedInUser = useSelector((state) => state.loggedInUser)
@@ -44,30 +46,27 @@ const BlogForm = () => {
   }
 
   return (
-    <Togglable buttonLabel="Add new blog" ref={refBlogForm}>
-      <h2>Add new blog</h2>
-      <form onSubmit={handleSubmit} className="blogForm">
-        <div>
-          <label>
-            Title:{' '}
-            <input name="title" placeholder="title of the blog" {...title} />
-          </label>
-        </div>
-        <div>
-          <label>
-            Author:{' '}
-            <input name="author" placeholder="author of the blog" {...author} />
-          </label>
-        </div>
-        <div>
-          <label>
-            URL: <input name="url" placeholder="url of the blog" {...url} />
-          </label>
-        </div>
-        <div>
-          <button type="submit">Create</button>
-        </div>
-      </form>
+    <Togglable buttonLabel="Add a new blog" ref={refBlogForm}>
+      <h2>Add a new blog</h2>
+
+      <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3">
+          <Form.Label>Title</Form.Label>
+          <Form.Control placeholder="Enter title of the blog" {...title} />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Author</Form.Label>
+          <Form.Control placeholder="Enter author of the blog" {...author} />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>URL</Form.Label>
+          <Form.Control placeholder="Enter URL of the blog" {...url} />
+        </Form.Group>
+
+        <Button variant="primary" type="submit">
+          Create
+        </Button>
+      </Form>
     </Togglable>
   )
 }

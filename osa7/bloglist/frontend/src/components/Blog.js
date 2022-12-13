@@ -2,8 +2,10 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import { showError, showNotification } from '../reducers/notificationReducer'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import CommentForm from './CommentForm'
+import Button from 'react-bootstrap/Button'
+import { ButtonGroup, ButtonToolbar, Card, Stack } from 'react-bootstrap'
 
 const Blog = () => {
   const id = useParams().id
@@ -57,38 +59,55 @@ const Blog = () => {
     if (loggedInUser.username !== blog.user.username) return
 
     return (
-      <button onClick={() => handleRemove()} name="remove">
+      <Button variant="warning" onClick={() => handleRemove()} name="remove">
         Remove
-      </button>
+      </Button>
     )
   }
 
   return (
-    <div>
-      <h2>
-        {blog.title} by {blog.author}
-      </h2>
-      <p>
-        <a href="{blog.url}">{blog.url}</a>
-      </p>
-      <p>
-        Likes: {blog.likes}
-        <button onClick={() => handleLike()} name="like">
-          Like
-        </button>
-      </p>
-      {blog.user && <p>{blog.user.name}</p>}
-      {deleteBlog()}
-      <h3>Comments</h3>
-      <CommentForm blog={blog} />
+    <Stack gap={3}>
+      <Card>
+        <Card.Header as="h2">
+          {blog.title} by {blog.author}
+        </Card.Header>
+        <Card.Body>
+          <Card.Text>
+            <a href="{blog.url}">{blog.url}</a>
+          </Card.Text>
+          <Card.Text>Likes: {blog.likes}</Card.Text>
+          {blog.user && (
+            <Card.Text>
+              Saved by{' '}
+              <Link to={`/users/${blog.user.id}`}>{blog.user.name}</Link>
+            </Card.Text>
+          )}
+
+          <ButtonToolbar aria-label="buttons">
+            <ButtonGroup className="me-2" aria-label="First group">
+              <Button variant="info" onClick={() => handleLike()} name="like">
+                Like
+              </Button>
+            </ButtonGroup>
+            <ButtonGroup className="me-2" aria-label="Second group">
+              {deleteBlog()}
+            </ButtonGroup>
+          </ButtonToolbar>
+        </Card.Body>
+      </Card>
+
       <div>
-        <ul>
-          {blog.comments.map((comment, index) => (
-            <li key={index}>{comment}</li>
-          ))}
-        </ul>
+        <h3>Comments</h3>
+        <CommentForm blog={blog} />
+        <div>
+          <ul>
+            {blog.comments.map((comment, index) => (
+              <li key={index}>{comment}</li>
+            ))}
+          </ul>
+        </div>
       </div>
-    </div>
+    </Stack>
   )
 }
 

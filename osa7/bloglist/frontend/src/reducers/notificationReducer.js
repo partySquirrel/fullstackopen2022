@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = ''
+const initialState = null
 
 const notificationSlice = createSlice({
   name: 'notification',
@@ -10,7 +10,7 @@ const notificationSlice = createSlice({
       return action.payload
     },
     clearNotification() {
-      return ''
+      return null
     },
   },
 })
@@ -28,7 +28,7 @@ export const showNotification = (content, timeoutSeconds) => {
 }
 export const showError = (content, timeoutSeconds) => {
   return (dispatch) => {
-    dispatch(setNotification({ message: content, severity: 'error' }))
+    dispatch(setNotification({ message: content, severity: 'danger' }))
     if (timeoutID !== undefined) clearTimeout(timeoutID)
     setTimeout(() => {
       dispatch(clearNotification())

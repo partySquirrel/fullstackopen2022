@@ -19,7 +19,7 @@ const LogoutForm = () => {
   }
 
   return (
-    <div>
+    <>
       {user.name} logged in{' '}
       <button
         className="btn btn-light btn-sm"
@@ -28,7 +28,7 @@ const LogoutForm = () => {
       >
         Log out
       </button>
-    </div>
+    </>
   )
 }
 

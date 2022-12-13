@@ -1,32 +1,41 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
+import { Card, ListGroup, Stack } from 'react-bootstrap'
 
 const User = () => {
   const id = useParams().id
-  let user = null
 
-  if (id) {
-    const users = useSelector((state) => state.users)
-    user = users.find((u) => u.id === id)
-  }
+  if (!id) return null
 
-  const UserDetails = () => {
-    return (
-      <>
-        <h3>{user.name}</h3>
-        <div>
-          <ul>
+  const users = useSelector((state) => state.users)
+  const user = users.find((u) => u.id === id)
+
+  if (!user) return null
+
+  return (
+    <Stack gap={3}>
+      <Card>
+        <Card.Header as="h2">{user.name}</Card.Header>
+
+        {user.blogs.length > 0 && (
+          <ListGroup variant="flush">
             {user.blogs.map((blog) => (
-              <li key={blog.id}>{blog.title}</li>
+              <ListGroup.Item key={blog.id}>
+                <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+              </ListGroup.Item>
             ))}
-          </ul>
-        </div>
-      </>
-    )
-  }
+          </ListGroup>
+        )}
 
-  return <>{user && UserDetails(user)}</>
+        {user.blogs.length === 0 && (
+          <Card.Body>
+            <Card.Text>No blogs</Card.Text>
+          </Card.Body>
+        )}
+      </Card>
+    </Stack>
+  )
 }
 
 export default User

@@ -8,7 +8,7 @@ const BlogList = () => {
   })
 
   return (
-    <>
+    <div>
       <h2>List of blogs</h2>
       <ul>
         {blogs.map((blog) => (
@@ -19,7 +19,7 @@ const BlogList = () => {
           </li>
         ))}
       </ul>
-    </>
+    </div>
   )
 }
 
