@@ -20,17 +20,6 @@ const Blog = () => {
 
   const loggedInUser = useSelector((state) => state.loggedInUser)
 
-  const blogStyle = {
-    padding: 10,
-    border: 'solid',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    marginBottom: 5,
-  }
-  const buttonStyle = {
-    marginLeft: 5,
-  }
-
   const dispatch = useDispatch()
 
   const handleLike = async () => {
@@ -68,14 +57,14 @@ const Blog = () => {
     if (loggedInUser.username !== blog.user.username) return
 
     return (
-      <button style={buttonStyle} onClick={() => handleRemove()} name="remove">
+      <button onClick={() => handleRemove()} name="remove">
         Remove
       </button>
     )
   }
 
   return (
-    <div style={blogStyle} className="blogItem">
+    <div>
       <h2>
         {blog.title} by {blog.author}
       </h2>
@@ -84,7 +73,7 @@ const Blog = () => {
       </p>
       <p>
         Likes: {blog.likes}
-        <button style={buttonStyle} onClick={() => handleLike()} name="like">
+        <button onClick={() => handleLike()} name="like">
           Like
         </button>
       </p>
