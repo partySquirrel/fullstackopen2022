@@ -10,7 +10,7 @@ import './index.css'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Router>
     <Provider store={store}>
-      <App/>
+      <App />
     </Provider>
   </Router>
 )

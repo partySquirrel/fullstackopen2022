@@ -1,8 +1,10 @@
-PUT http://localhost:3003/api/blogs/63652a85e712cbe96947c7b3
+PUT http://localhost:3003/api/blogs/63984cf9195e047cd17efc3f
 Content-Type: application/json
 
 {
   "title": "Updated blog",
   "author": "Liina",
-  "url": "http://something"
+  "url": "http://something",
+  "likes": 0,
+  "comments": ["yksi", "kaksi"]
 }

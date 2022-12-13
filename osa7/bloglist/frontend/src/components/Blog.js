@@ -73,29 +73,30 @@ const Blog = () => {
     )
   }
 
-  const getDetails = () => {
-    return (
-      <>
-        <p>
-          <a href="{blog.url}">{blog.url}</a>
-        </p>
-        <p>
-          Likes: {blog.likes}
-          <button style={buttonStyle} onClick={() => handleLike()} name="like">
-            Like
-          </button>
-        </p>
-        {blog.user && <p>{blog.user.name}</p>}
-        {deleteBlog()}
-      </>
-    )
-  }
   return (
     <div style={blogStyle} className="blogItem">
+      <h2>
+        {blog.title} by {blog.author}
+      </h2>
       <p>
-        <strong>{blog.title}</strong> by {blog.author}
+        <a href="{blog.url}">{blog.url}</a>
       </p>
-      {getDetails()}
+      <p>
+        Likes: {blog.likes}
+        <button style={buttonStyle} onClick={() => handleLike()} name="like">
+          Like
+        </button>
+      </p>
+      {blog.user && <p>{blog.user.name}</p>}
+      {deleteBlog()}
+      <h3>Comments</h3>
+      <div>
+        <ul>
+          {blog.comments.map((comment, index) => (
+            <li key={index}>{comment}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   )
 }

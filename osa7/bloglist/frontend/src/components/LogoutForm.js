@@ -21,7 +21,11 @@ const LogoutForm = () => {
   return (
     <div>
       {user.name} logged in{' '}
-      <button className="btn btn-light btn-sm" onClick={handleLogout} id="logout">
+      <button
+        className="btn btn-light btn-sm"
+        onClick={handleLogout}
+        id="logout"
+      >
         Log out
       </button>
     </div>
