@@ -7,11 +7,12 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUser } from './reducers/loginReducer'
 import LogoutForm from './components/LogoutForm'
 import { initializeUsers } from './reducers/userReducer'
-import { Routes, Route, Link, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import Blogs from './components/Blogs'
 import UserList from './components/UserList'
 import User from './components/User'
 import Blog from './components/Blog'
+import Navigation from './components/Navigation'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -33,12 +34,8 @@ const App = () => {
   const Home = () => <div></div>
 
   return (
-    <div>
-      <div>
-        <Link to="/">home</Link>
-        <Link to="/blogs">blogs</Link>
-        <Link to="/users">users</Link>
-      </div>
+    <div className="container">
+      <Navigation />
 
       <h1>Blogs</h1>
       <Notification />
