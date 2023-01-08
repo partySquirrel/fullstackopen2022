@@ -44,3 +44,7 @@ try {
     }
     console.log(errorMessage);
 }
+
+export default function (height: number, weight: number) {
+    return calculateBmi(height, weight);
+}
