@@ -47,7 +47,7 @@ const calculateExercises = (dailyHours: number[], targetHours: number): Result =
     // 75% of target = 2
     // 100% or more = 3
     const completion = 100 * average / targetHours;
-    let rate: [number, string];
+    let rate: [number, string] = [0, ''];
     if (completion < 75) {
         rate = [1, 'goal was not achieved'];
     } else if (completion < 100) {
@@ -79,4 +79,8 @@ try {
         errorMessage = 'Something bad happened.';
     }
     console.log(errorMessage);
+}
+
+export default function (dailyHours: number[], targetHours: number): Result {
+    return calculateExercises(dailyHours, targetHours);
 }
