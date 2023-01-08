@@ -2,7 +2,7 @@ import express from "express";
 import calculate from './bmiCalculator';
 
 const app = express();
-app.use(express.json())
+app.use(express.json());
 
 app.get('/hello', (_req, res) => {
     res.send('Hello Full Stack!');
@@ -17,13 +17,13 @@ app.get('/bmi', (req, res) => {
             weight: Number(pw),
             height: Number(ph),
             bmi: calculate(Number(ph), Number(pw))
-        }
+        };
         res.send(result);
 
     } else {
         res.status(400).json({
             error: "malformed parameters"
-        })
+        });
     }
 });
 

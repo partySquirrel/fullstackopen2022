@@ -23,8 +23,8 @@ const parseExerciseArguments = (args: Array<string>): ExerciseValues => {
     return {
         targetHours: targetHours,
         dailyHours: dailyHours
-    }
-}
+    };
+};
 
 interface Result {
     periodLength: number;
@@ -64,8 +64,8 @@ const calculateExercises = (dailyHours: number[], targetHours: number): Result =
         ratingDescription: rate[1],
         target: targetHours,
         average: average
-    }
-}
+    };
+};
 
 try {
     const {targetHours, dailyHours} = parseExerciseArguments(process.argv);
